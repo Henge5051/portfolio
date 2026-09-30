@@ -302,6 +302,7 @@
   button.sell-btn { background: linear-gradient(135deg, #ef4444, #dc2626); padding: 8px 12px; font-size: 13px; width: auto; }
   button.sell { background: linear-gradient(135deg, #f59e0b, #d97706); padding: 8px 12px; font-size: 13px; width: auto; }
   button.undo { background: rgba(255,255,255,0.06); color: var(--text-mid); padding: 8px 12px; font-size: 13px; border: 1px solid var(--border); box-shadow: none; width: auto; }
+  button.buy-more { background: linear-gradient(135deg, #22c55e, #16a34a); padding: 8px 12px; font-size: 13px; width: auto; }
 
   .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: var(--radius-sm); background: rgba(10, 14, 20, 0.4); margin: 0 -4px; padding: 0 4px; }
   table { width: 100%; border-collapse: collapse; min-width: 480px; }
@@ -506,7 +507,7 @@
   <!-- CS2 КЕЙСЫ -->
   <div class="tab-content" id="tab-cases">
     <div class="cards" id="summaryCases"></div>
-    <div class="case-note">💡 Кейсы растут со временем</div>
+    <div class="case-note">💡 Кейсы растут со временем. Кнопка <b>➕</b> — докупить партию с пересчётом средней цены.</div>
     <div class="panel">
       <h2>➕ Добавить кейс</h2>
       <form id="caseForm">
@@ -830,7 +831,6 @@ async function renderHistory(){
       </div>`;
   }
 
-  // График стоимости
   const canvas = document.getElementById('historyChart');
   if (historyCharts.history) historyCharts.history.destroy();
 
@@ -903,7 +903,6 @@ async function renderHistory(){
     });
   }
 
-  // Пирог по категориям
   const catCanvas = document.getElementById('categoriesChart');
   if (historyCharts.categories) historyCharts.categories.destroy();
 
@@ -960,7 +959,6 @@ async function renderHistory(){
     }
   }
 
-  // Статистика
   const statsEl = document.getElementById('historyStats');
   if (snapshots.length < 2){
     statsEl.innerHTML = '<div class="empty">Недостаточно данных</div>';
@@ -998,7 +996,6 @@ async function renderHistory(){
     `;
   }
 
-  // Список снимков
   const listEl = document.getElementById('snapshotsList');
   const emptyEl = document.getElementById('emptySnapshots');
 
@@ -1122,6 +1119,60 @@ function removeCase(id){ if(!confirm('Удалить?'))return; state.cases=stat
 function editCasePrice(id){ const c=state.cases.find(x=>x.id===id); if(!c)return; const v=prompt(`Цена для «${c.name}»:`,c.currentPrice); if(v===null)return; const n=parseFloat(v); if(isNaN(n)||n<0)return; c.currentPrice=n; save(); }
 function sellCase(id){ const c=state.cases.find(x=>x.id===id); if(!c)return; const v=prompt(`Продажа (₽). Тек: ${c.currentPrice}`,c.currentPrice); if(v===null)return; const n=parseFloat(v); if(isNaN(n)||n<0)return; c.status='sold'; c.soldPrice=n; save(); }
 function unsellCase(id){ const c=state.cases.find(x=>x.id===id); if(!c)return; if(!confirm('Вернуть?'))return; c.status='held'; c.soldPrice=null; save(); }
+
+/**
+ * ➕ Докупить кейсы — увеличение количества с пересчётом средней цены
+ */
+function buyMoreCase(id){
+  const c = state.cases.find(x=>x.id===id);
+  if(!c) return;
+
+  const qtyInput = prompt(
+    `📦 ${c.name}\n\nТекущее кол-во: ${c.quantity} шт.\nСредняя цена покупки: ${fmt(c.buyPrice)}\n\nСколько докупили?`,
+    '1'
+  );
+  if(qtyInput === null) return;
+  const addQty = parseInt(qtyInput);
+  if(isNaN(addQty) || addQty <= 0){
+    return toast('Некорректное количество', 'error');
+  }
+
+  const priceInput = prompt(
+    `Цена покупки за 1 шт (₽)?\n\nТекущая средняя: ${fmt(c.buyPrice)}`,
+    c.currentPrice.toString()
+  );
+  if(priceInput === null) return;
+  const addPrice = parseFloat(priceInput);
+  if(isNaN(addPrice) || addPrice < 0){
+    return toast('Некорректная цена', 'error');
+  }
+
+  const oldQty = c.quantity;
+  const oldPrice = c.buyPrice;
+  const oldTotal = oldQty * oldPrice;
+  const newTotal = addQty * addPrice;
+  const totalQty = oldQty + addQty;
+  const newAvgPrice = (oldTotal + newTotal) / totalQty;
+
+  c.quantity = totalQty;
+  c.buyPrice = Math.round(newAvgPrice * 100) / 100;
+
+  save();
+
+  toast(`✓ Докуплено ${addQty} шт. Теперь ${totalQty} шт.`, 'success');
+  haptic('medium');
+
+  setTimeout(() => {
+    alert(
+      `📦 ${c.name}\n\n` +
+      `Было: ${oldQty} шт. × ${fmt(oldPrice)} = ${fmt(oldTotal)}\n` +
+      `Докупили: ${addQty} шт. × ${fmt(addPrice)} = ${fmt(newTotal)}\n\n` +
+      `✅ Стало: ${totalQty} шт.\n` +
+      `📊 Средняя цена: ${fmt(c.buyPrice)}\n` +
+      `💵 Всего вложено: ${fmt(c.quantity * c.buyPrice)}`
+    );
+  }, 300);
+}
 
 document.getElementById('tradeForm').addEventListener('submit', e => {
   e.preventDefault();
@@ -1259,7 +1310,11 @@ function renderCases(){
       <td>${fmt(currentPrice)}</td>
       <td class="${pnlCls}">${fmt(pnl)}<br><small>${fmtPct(pnlPct)}</small></td>
       <td><div class="actions">
-        ${isSold ? `<button class="undo" onclick="unsellCase(${c.id})">↩️</button>` : `<button class="secondary" onclick="editCasePrice(${c.id})">✏️</button><button class="sell" onclick="sellCase(${c.id})">💰</button>`}
+        ${isSold 
+          ? `<button class="undo" onclick="unsellCase(${c.id})">↩️</button>` 
+          : `<button class="secondary" onclick="editCasePrice(${c.id})" title="Изменить цену">✏️</button>
+             <button class="buy-more" onclick="buyMoreCase(${c.id})" title="Докупить">➕</button>
+             <button class="sell" onclick="sellCase(${c.id})" title="Продать">💰</button>`}
         <button class="danger" onclick="removeCase(${c.id})">✕</button>
       </div></td>`;
     tbody.appendChild(tr);
