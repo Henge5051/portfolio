@@ -33,10 +33,12 @@ const fmt = (n) => new Intl.NumberFormat('ru-RU', {
 
 /**
  * Расчёт P&L портфеля по всем категориям
+ * Наклейки: только свободные (не наклеенные на скины)
  */
 function calcPnl(portfolio) {
   const assets = portfolio.assets || [];
   const skins = portfolio.skins || [];
+  const stickers = (portfolio.stickers || []).filter(s => !s.applied);
   const cases = (portfolio.cases || []).filter(c => c.status === 'held');
   const trades = (portfolio.trades || []).filter(t => t.status === 'open');
 
@@ -46,14 +48,17 @@ function calcPnl(portfolio) {
   const sv = skins.reduce((s, x) => s + (x.quantity || 1) * x.currentPrice, 0);
   const sc = skins.reduce((s, x) => s + (x.quantity || 1) * x.buyPrice, 0);
 
+  const stv = stickers.reduce((s, x) => s + (x.quantity || 1) * x.currentPrice, 0);
+  const stc = stickers.reduce((s, x) => s + (x.quantity || 1) * x.buyPrice, 0);
+
   const cv = cases.reduce((s, c) => s + c.quantity * c.currentPrice, 0);
   const cc = cases.reduce((s, c) => s + c.quantity * c.buyPrice, 0);
 
   const tv = trades.reduce((s, t) => s + t.quantity * t.current, 0);
   const tc = trades.reduce((s, t) => s + t.quantity * t.entry, 0);
 
-  const totalValue = iv + sv + cv + tv;
-  const totalCost = ic + sc + cc + tc;
+  const totalValue = iv + sv + stv + cv + tv;
+  const totalCost = ic + sc + stc + cc + tc;
 
   return {
     totalValue,
@@ -61,11 +66,13 @@ function calcPnl(portfolio) {
     pnl: totalValue - totalCost,
     investValue: iv,
     skinsValue: sv,
+    stickersValue: stv,
     casesValue: cv,
     tradesValue: tv,
     counts: {
       assets: assets.length,
       skins: skins.length,
+      stickers: stickers.length,
       cases: cases.length,
       trades: trades.length
     }
@@ -76,7 +83,7 @@ function calcPnl(portfolio) {
  * Создать/обновить ежедневный снимок портфеля
  */
 async function createSnapshot(telegramId, portfolio) {
-  const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+  const today = new Date().toISOString().slice(0, 10);
 
   const calc = calcPnl(portfolio);
 
@@ -90,10 +97,12 @@ async function createSnapshot(telegramId, portfolio) {
       total_pnl: calc.pnl,
       invest_value: calc.investValue,
       skins_value: calc.skinsValue,
+      stickers_value: calc.stickersValue,
       cases_value: calc.casesValue,
       trades_value: calc.tradesValue,
       assets_count: calc.counts.assets,
       skins_count: calc.counts.skins,
+      stickers_count: calc.counts.stickers,
       cases_count: calc.counts.cases,
       trades_count: calc.counts.trades
     }, { onConflict: 'telegram_id,snapshot_date' });
@@ -134,16 +143,20 @@ app.get('/api/portfolio', async (req, res) => {
   if (error) return res.status(500).json({ error: error.message });
 
   if (!data) {
-    // Создаём новый портфель
     const { data: created } = await supabase
       .from('portfolios')
       .insert({
         telegram_id: parseInt(telegram_id),
-        data: { assets: [], skins: [], cases: [], trades: [] }
+        data: { assets: [], skins: [], stickers: [], cases: [], trades: [] }
       })
       .select()
       .single();
-    return res.json(created || { data: { assets: [], skins: [], cases: [], trades: [] } });
+    return res.json(created || { data: { assets: [], skins: [], stickers: [], cases: [], trades: [] } });
+  }
+
+  // Убедимся, что в data есть поле stickers (для старых портфелей)
+  if (!data.data.stickers) {
+    data.data.stickers = [];
   }
 
   res.json(data);
@@ -155,6 +168,9 @@ app.post('/api/portfolio', async (req, res) => {
   if (!telegram_id || !data) {
     return res.status(400).json({ error: 'telegram_id and data required' });
   }
+
+  // Гарантируем наличие всех полей
+  if (!data.stickers) data.stickers = [];
 
   const { error } = await supabase
     .from('portfolios')
@@ -168,7 +184,6 @@ app.post('/api/portfolio', async (req, res) => {
 
   if (error) return res.status(500).json({ error: error.message });
 
-  // Создаём снимок при каждом сохранении (асинхронно)
   createSnapshot(parseInt(telegram_id), data).catch(e =>
     console.error('Snapshot on save failed:', e.message)
   );
@@ -176,7 +191,7 @@ app.post('/api/portfolio', async (req, res) => {
   res.json({ ok: true });
 });
 
-// Статистика для админа
+// Статистика
 app.get('/api/stats', async (req, res) => {
   const { count } = await supabase
     .from('portfolios')
@@ -188,10 +203,6 @@ app.get('/api/stats', async (req, res) => {
    API — ИСТОРИЯ (СНИМКИ)
 ========================================================= */
 
-/**
- * GET /api/snapshots?telegram_id=123&days=30
- * Получить историю снимков портфеля
- */
 app.get('/api/snapshots', async (req, res) => {
   const { telegram_id, days } = req.query;
   if (!telegram_id) return res.status(400).json({ error: 'telegram_id required' });
@@ -217,10 +228,6 @@ app.get('/api/snapshots', async (req, res) => {
   res.json({ snapshots: data || [] });
 });
 
-/**
- * POST /api/snapshots/create
- * Принудительно создать снимок
- */
 app.post('/api/snapshots/create', async (req, res) => {
   const { telegram_id, portfolio } = req.body;
   if (!telegram_id || !portfolio) {
@@ -298,6 +305,7 @@ ${emoji} P&L: <b>${sign}${fmt(calc.pnl)}</b> (${sign}${pnlPct.toFixed(2)}%)
 <b>Разбивка:</b>
 💼 Инвестиции: ${fmt(calc.investValue)}
 🎮 Скины: ${fmt(calc.skinsValue)}
+🎨 Наклейки: ${fmt(calc.stickersValue)}
 📦 Кейсы: ${fmt(calc.casesValue)}
 💹 Трейдинг: ${fmt(calc.tradesValue)}
 

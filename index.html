@@ -39,6 +39,7 @@
     --green: #4ade80;
     --red: #f87171;
     --purple: #a78bfa;
+    --pink: #d946ef;
     --orange: #f59e0b;
     --cyan: #22d3ee;
     --radius: 16px;
@@ -69,7 +70,7 @@
     inset: 0;
     background:
       radial-gradient(ellipse 600px 500px at 15% -10%, rgba(74, 158, 255, 0.18), transparent 60%),
-      radial-gradient(ellipse 500px 400px at 85% 5%, rgba(167, 139, 250, 0.14), transparent 60%),
+      radial-gradient(ellipse 500px 400px at 85% 5%, rgba(217, 70, 239, 0.12), transparent 60%),
       radial-gradient(ellipse 700px 500px at 50% 100%, rgba(34, 211, 238, 0.08), transparent 60%);
     pointer-events: none;
     z-index: 0;
@@ -154,17 +155,17 @@
     border-radius: 12px;
     transition: all 0.2s var(--transition);
     flex: 1;
-    min-width: 46px;
+    min-width: 44px;
     -webkit-tap-highlight-color: transparent;
     position: relative;
   }
   .nav-item .icon {
-    font-size: 19px;
+    font-size: 18px;
     transition: transform 0.2s var(--transition);
     filter: grayscale(0.5) opacity(0.7);
   }
   .nav-item .label {
-    font-size: 9px;
+    font-size: 8.5px;
     color: var(--text-dim);
     font-weight: 500;
     transition: color 0.2s var(--transition);
@@ -177,7 +178,7 @@
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 20px;
+    width: 18px;
     height: 3px;
     border-radius: 0 0 3px 3px;
     background: var(--blue);
@@ -219,12 +220,14 @@
   .card-value.negative { color: var(--red); }
   .card-value.case { color: var(--purple); }
   .card-value.trade { color: var(--cyan); }
+  .card-value.sticker { color: var(--pink); }
   .card-sub { font-size: 11px; color: var(--text-dim); margin-top: 4px; }
   .card.accent-blue { border-left: 3px solid var(--blue); }
   .card.accent-green { border-left: 3px solid var(--green); }
   .card.accent-purple { border-left: 3px solid var(--purple); }
   .card.accent-cyan { border-left: 3px solid var(--cyan); }
   .card.accent-orange { border-left: 3px solid var(--orange); }
+  .card.accent-pink { border-left: 3px solid var(--pink); }
 
   .panel {
     background: var(--surface);
@@ -297,6 +300,7 @@
   button.danger { background: linear-gradient(135deg, #f87171, #e05555); padding: 8px 12px; font-size: 13px; width: auto; }
   button.secondary { background: rgba(255,255,255,0.06); color: var(--text-mid); box-shadow: none; border: 1px solid var(--border); width: auto; padding: 10px 16px; font-size: 13px; }
   button.cs2-btn { background: linear-gradient(135deg, #f59e0b, #d97706); }
+  button.sticker-btn { background: linear-gradient(135deg, #a78bfa, #d946ef); }
   button.case-btn { background: linear-gradient(135deg, #a78bfa, #8b5cf6); }
   button.trade-btn { background: linear-gradient(135deg, #22d3ee, #06b6d4); color: #0a0e14; }
   button.sell-btn { background: linear-gradient(135deg, #ef4444, #dc2626); padding: 8px 12px; font-size: 13px; width: auto; }
@@ -309,7 +313,7 @@
   th, td { padding: 10px 10px; text-align: left; border-bottom: 1px solid var(--border); font-size: 12.5px; white-space: nowrap; }
   th { color: var(--text-dim); font-weight: 600; font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
   tr:last-child td { border-bottom: none; }
-  tr.sold-row { opacity: 0.5; }
+  tr.sold-row { opacity: 0.55; }
   td.positive { color: var(--green); font-weight: 500; }
   td.negative { color: var(--red); font-weight: 500; }
   .actions { display: flex; gap: 4px; }
@@ -324,6 +328,12 @@
   .tag-sold { background: rgba(74,222,128,0.15); color: var(--green); }
   .tag-long { background: rgba(34,211,238,0.15); color: var(--cyan); }
   .tag-short { background: rgba(248,113,113,0.15); color: var(--red); }
+  .tag-paper { background: rgba(180,180,180,0.15); color: #b4b4b4; }
+  .tag-glitter { background: rgba(255,182,193,0.15); color: #ffb6c1; }
+  .tag-holo { background: rgba(167,139,250,0.2); color: #a78bfa; }
+  .tag-foil { background: rgba(251,191,36,0.15); color: #fbbf24; }
+  .tag-gold { background: rgba(255,215,0,0.15); color: #ffd700; }
+  .tag-lenticular { background: rgba(34,211,238,0.15); color: #22d3ee; }
 
   .rarity-common { background: linear-gradient(135deg, #b0c3d9, #8fa4bc); color: #0a0e14; }
   .rarity-uncommon { background: linear-gradient(135deg, #5e98d9, #4a7bc0); color: #fff; }
@@ -337,8 +347,9 @@
   .badge { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 10px; margin-left: 3px; vertical-align: middle; background: rgba(255,255,255,0.08); }
 
   .hint { font-size: 11.5px; color: var(--text-dim); margin-top: 8px; line-height: 1.6; }
-  .cs2-note, .case-note, .trade-note { border-radius: var(--radius-sm); padding: 12px 14px; font-size: 12px; margin-bottom: 14px; line-height: 1.55; }
+  .cs2-note, .sticker-note, .case-note, .trade-note { border-radius: var(--radius-sm); padding: 12px 14px; font-size: 12px; margin-bottom: 14px; line-height: 1.55; }
   .cs2-note { background: linear-gradient(135deg, rgba(245,158,11,0.08), rgba(245,158,11,0.02)); border: 1px solid rgba(245,158,11,0.2); color: #f5c76b; }
+  .sticker-note { background: linear-gradient(135deg, rgba(217,70,239,0.08), rgba(217,70,239,0.02)); border: 1px solid rgba(217,70,239,0.2); color: #f0abfc; }
   .case-note { background: linear-gradient(135deg, rgba(167,139,250,0.08), rgba(167,139,250,0.02)); border: 1px solid rgba(167,139,250,0.2); color: #c4b5fd; }
   .trade-note { background: linear-gradient(135deg, rgba(34,211,238,0.08), rgba(34,211,238,0.02)); border: 1px solid rgba(34,211,238,0.2); color: #67e8f9; }
 
@@ -357,6 +368,7 @@
   .filters button.active { background: linear-gradient(135deg, rgba(167,139,250,0.25), rgba(167,139,250,0.15)); color: var(--purple); border-color: rgba(167,139,250,0.4); }
   .filters.trade button.active { background: linear-gradient(135deg, rgba(34,211,238,0.25), rgba(34,211,238,0.15)); color: var(--cyan); border-color: rgba(34,211,238,0.4); }
   .filters.history button.active { background: linear-gradient(135deg, rgba(74,158,255,0.25), rgba(74,158,255,0.15)); color: var(--blue); border-color: rgba(74,158,255,0.4); }
+  .filters.sticker button.active { background: linear-gradient(135deg, rgba(217,70,239,0.25), rgba(217,70,239,0.15)); color: var(--pink); border-color: rgba(217,70,239,0.4); }
 
   #toast {
     position: fixed;
@@ -504,10 +516,73 @@
     <div class="panel"><h2>💠 По wear</h2><div class="chart-container"><canvas id="pieWear"></canvas></div></div>
   </div>
 
+  <!-- НАКЛЕЙКИ -->
+  <div class="tab-content" id="tab-stickers">
+    <div class="cards" id="summaryStickers"></div>
+    <div class="sticker-note">💡 <b>Holo/Foil/Gold</b> в разы дороже Paper. <b>Katowice 2014</b> и <b>Crown Foil</b> — топ по стоимости. Наклеенные учитываются отдельно.</div>
+
+    <div class="panel">
+      <h2>➕ Добавить наклейку</h2>
+      <form id="stickerForm">
+        <div class="form-grid">
+          <div class="full"><label class="field-label">Название</label><input type="text" id="stickerName" placeholder="Crown (Foil)" required></div>
+          <div>
+            <label class="field-label">Качество</label>
+            <select id="stickerQuality">
+              <option value="paper">Paper</option>
+              <option value="glitter">Glitter</option>
+              <option value="holo" selected>Holo</option>
+              <option value="foil">Foil</option>
+              <option value="gold">Gold</option>
+              <option value="lenticular">Lenticular</option>
+            </select>
+          </div>
+          <div><label class="field-label">Турнир</label><input type="text" id="stickerTournament" placeholder="Katowice 2014"></div>
+          <div><label class="field-label">Команда/Игрок</label><input type="text" id="stickerTeam" placeholder="Team Liquid"></div>
+          <div><label class="field-label">Кол-во</label><input type="number" id="stickerQty" value="1" min="1" required></div>
+          <div>
+            <label class="field-label">Статус</label>
+            <select id="stickerApplied">
+              <option value="no">Свободная</option>
+              <option value="yes">Наклеена на скин</option>
+            </select>
+          </div>
+          <div><label class="field-label">Куплено (₽)</label><input type="number" id="stickerBuy" placeholder="5000" step="any" min="0" required></div>
+          <div><label class="field-label">Тек. (₽)</label><input type="number" id="stickerCurrent" placeholder="8000" step="any" min="0" required></div>
+        </div>
+        <button type="submit" class="sticker-btn">🎨 Добавить</button>
+      </form>
+    </div>
+
+    <div class="panel">
+      <h2>🎨 Мои наклейки</h2>
+      <div class="filters sticker">
+        <button class="active" data-sticker-filter="all">Все</button>
+        <button data-sticker-filter="free">Свободные</button>
+        <button data-sticker-filter="applied">Наклеенные</button>
+        <button data-sticker-filter="profit">В плюсе</button>
+        <button data-sticker-filter="loss">В минусе</button>
+        <button data-sticker-filter="holo">Holo/Foil/Gold</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Наклейка</th><th>Качество</th><th>Турнир</th><th>Статус</th><th>Кол-во</th><th>Купил</th><th>Тек.</th><th>P&L</th><th></th></tr>
+          </thead>
+          <tbody id="stickersBody"></tbody>
+        </table>
+      </div>
+      <div id="emptyStickers" class="empty">Нет наклеек</div>
+    </div>
+
+    <div class="panel"><h2>🎨 По качеству</h2><div class="chart-container"><canvas id="pieStickerQuality"></canvas></div></div>
+    <div class="panel"><h2>🏆 Топ-5 по прибыли</h2><div id="topStickers"></div></div>
+  </div>
+
   <!-- CS2 КЕЙСЫ -->
   <div class="tab-content" id="tab-cases">
     <div class="cards" id="summaryCases"></div>
-    <div class="case-note">💡 Кейсы растут со временем. Кнопка <b>➕</b> — докупить партию с пересчётом средней цены.</div>
+    <div class="case-note">💡 Кнопка <b>➕</b> — докупить партию с пересчётом средней цены.</div>
     <div class="panel">
       <h2>➕ Добавить кейс</h2>
       <form id="caseForm">
@@ -599,6 +674,7 @@
   <div class="nav-item" data-tab="history"><span class="icon">📊</span><span class="label">Ист.</span></div>
   <div class="nav-item" data-tab="invest"><span class="icon">💼</span><span class="label">Инвест</span></div>
   <div class="nav-item" data-tab="cs2"><span class="icon">🎮</span><span class="label">Скины</span></div>
+  <div class="nav-item" data-tab="stickers"><span class="icon">🎨</span><span class="label">Стикеры</span></div>
   <div class="nav-item" data-tab="cases"><span class="icon">📦</span><span class="label">Кейсы</span></div>
   <div class="nav-item" data-tab="trading"><span class="icon">💹</span><span class="label">Трейд</span></div>
   <div class="nav-item" data-tab="profile"><span class="icon">👤</span><span class="label">Профиль</span></div>
@@ -616,6 +692,7 @@ const LEGACY_KEYS = ['portfolio_v9_tg','portfolio_v8','portfolio_v7','portfolio_
 const STEAM_FEE = 0.13;
 const RARITY_LABELS = {common:'Consumer',uncommon:'Industrial',rare:'Mil-Spec',mythical:'Restricted',legendary:'Classified',ancient:'Covert',contraband:'Contraband'};
 const WEAR_LABELS = {FN:'Factory New',MW:'Minimal Wear',FT:'Field-Tested',WW:'Well-Worn',BS:'Battle-Scarred'};
+const STICKER_QUALITY_LABELS = {paper:'Paper',glitter:'Glitter',holo:'Holo',foil:'Foil',gold:'Gold',lenticular:'Lenticular'};
 
 /* =========================================================
    TELEGRAM MINI APP
@@ -652,15 +729,30 @@ const telegramId = telegramUser?.id;
 /* =========================================================
    STATE
 ========================================================= */
-let state = {assets:[],skins:[],cases:[],trades:[]};
+let state = {assets:[],skins:[],stickers:[],cases:[],trades:[]};
 try {
   const saved = localStorage.getItem(STORAGE_KEY);
-  if (saved) state = Object.assign(state, JSON.parse(saved));
-  else for(const k of LEGACY_KEYS){ const o = localStorage.getItem(k); if(o){ state = Object.assign(state, JSON.parse(o)); console.log('Мигрировано с', k); break; } }
+  if (saved) {
+    const parsed = JSON.parse(saved);
+    state = Object.assign(state, parsed);
+    if (!state.stickers) state.stickers = [];
+  } else {
+    for(const k of LEGACY_KEYS){
+      const o = localStorage.getItem(k);
+      if(o){
+        const parsed = JSON.parse(o);
+        state = Object.assign(state, parsed);
+        if (!state.stickers) state.stickers = [];
+        console.log('Мигрировано с', k);
+        break;
+      }
+    }
+  }
 } catch(e){ console.error(e); }
 
 let currentCaseFilter = 'all';
 let currentTradeFilter = 'all';
+let currentStickerFilter = 'all';
 let currentTab = 'overview';
 let currentPeriod = 7;
 let charts = {};
@@ -695,6 +787,7 @@ async function loadFromCloud(){
     const result = await resp.json();
     if (result.data) {
       Object.assign(state, result.data);
+      if (!state.stickers) state.stickers = [];
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
       cloudOnline = true;
       updateSyncStatus();
@@ -911,6 +1004,7 @@ async function renderHistory(){
     const catData = {
       '💼 Инвестиции': Number(last.invest_value) || 0,
       '🎮 Скины': Number(last.skins_value) || 0,
+      '🎨 Наклейки': Number(last.stickers_value) || 0,
       '📦 Кейсы': Number(last.cases_value) || 0,
       '💹 Трейдинг': Number(last.trades_value) || 0
     };
@@ -918,7 +1012,7 @@ async function renderHistory(){
     const data = labels.map(k => catData[k]);
 
     if (labels.length){
-      const colors = ['#4a9eff', '#f59e0b', '#a78bfa', '#22d3ee'];
+      const colors = ['#4a9eff', '#f59e0b', '#d946ef', '#a78bfa', '#22d3ee'];
       historyCharts.categories = new Chart(catCanvas.getContext('2d'), {
         type: 'doughnut',
         data: {
@@ -1058,7 +1152,7 @@ document.querySelectorAll('.nav-item').forEach(item => {
 });
 
 let touchStartX = 0, touchStartY = 0, touchStartTime = 0;
-const tabs = ['overview','history','invest','cs2','cases','trading','profile'];
+const tabs = ['overview','history','invest','cs2','stickers','cases','trading','profile'];
 document.addEventListener('touchstart', e => {
   touchStartX = e.touches[0].clientX;
   touchStartY = e.touches[0].clientY;
@@ -1075,7 +1169,7 @@ document.addEventListener('touchend', e => {
 }, { passive: true });
 
 /* =========================================================
-   ФОРМЫ
+   ФОРМА АКТИВОВ
 ========================================================= */
 document.getElementById('assetForm').addEventListener('submit', e => {
   e.preventDefault();
@@ -1088,6 +1182,9 @@ document.getElementById('assetForm').addEventListener('submit', e => {
 function removeAsset(id){ if(!confirm('Удалить?'))return; state.assets=state.assets.filter(a=>a.id!==id); save(); }
 function editAsset(id){ const a=state.assets.find(x=>x.id===id); if(!a)return; const v=prompt('Новая цена:',a.currentPrice); if(v===null)return; const n=parseFloat(v); if(isNaN(n)||n<0)return; a.currentPrice=n; save(); }
 
+/* =========================================================
+   ФОРМА СКИНОВ
+========================================================= */
 document.getElementById('skinForm').addEventListener('submit', e => {
   e.preventDefault();
   const fv = document.getElementById('skinFloat').value;
@@ -1104,6 +1201,114 @@ document.getElementById('skinForm').addEventListener('submit', e => {
 function removeSkin(id){ if(!confirm('Удалить?'))return; state.skins=state.skins.filter(s=>s.id!==id); save(); }
 function editSkin(id){ const s=state.skins.find(x=>x.id===id); if(!s)return; const v=prompt('Новая цена (₽):',s.currentPrice); if(v===null)return; const n=parseFloat(v); if(isNaN(n)||n<0)return; s.currentPrice=n; save(); }
 
+/* =========================================================
+   ФОРМА НАКЛЕЕК
+========================================================= */
+document.getElementById('stickerForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const st = {
+    id: Date.now(),
+    name: document.getElementById('stickerName').value.trim(),
+    quality: document.getElementById('stickerQuality').value,
+    tournament: document.getElementById('stickerTournament').value.trim(),
+    team: document.getElementById('stickerTeam').value.trim(),
+    quantity: parseInt(document.getElementById('stickerQty').value) || 1,
+    applied: document.getElementById('stickerApplied').value === 'yes',
+    buyPrice: parseFloat(document.getElementById('stickerBuy').value),
+    currentPrice: parseFloat(document.getElementById('stickerCurrent').value)
+  };
+  if (!st.name || isNaN(st.buyPrice) || isNaN(st.currentPrice)) {
+    toast('Заполните поля', 'error');
+    return;
+  }
+  state.stickers.push(st);
+  e.target.reset();
+  document.getElementById('stickerQty').value = 1;
+  document.getElementById('stickerQuality').value = 'holo';
+  document.getElementById('stickerApplied').value = 'no';
+  save();
+  toast('Наклейка добавлена ✓', 'success');
+});
+
+function removeSticker(id) {
+  if (!confirm('Удалить?')) return;
+  state.stickers = state.stickers.filter(s => s.id !== id);
+  save();
+}
+
+function editSticker(id) {
+  const s = state.stickers.find(x => x.id === id);
+  if (!s) return;
+  const v = prompt('Новая цена (₽):', s.currentPrice);
+  if (v === null) return;
+  const n = parseFloat(v);
+  if (isNaN(n) || n < 0) return;
+  s.currentPrice = n;
+  save();
+}
+
+function toggleStickerApplied(id) {
+  const s = state.stickers.find(x => x.id === id);
+  if (!s) return;
+  s.applied = !s.applied;
+  save();
+  toast(s.applied ? '📌 Наклеена' : '🎨 Свободная');
+}
+
+function buyMoreSticker(id) {
+  const s = state.stickers.find(x => x.id === id);
+  if (!s) return;
+
+  const qtyInput = prompt(
+    `🎨 ${s.name}\n\nТекущее кол-во: ${s.quantity} шт.\nСредняя цена: ${fmt(s.buyPrice)}\n\nСколько докупили?`,
+    '1'
+  );
+  if (qtyInput === null) return;
+  const addQty = parseInt(qtyInput);
+  if (isNaN(addQty) || addQty <= 0) return toast('Некорректное количество', 'error');
+
+  const priceInput = prompt(
+    `Цена покупки за 1 шт (₽)?\n\nТекущая средняя: ${fmt(s.buyPrice)}`,
+    s.currentPrice.toString()
+  );
+  if (priceInput === null) return;
+  const addPrice = parseFloat(priceInput);
+  if (isNaN(addPrice) || addPrice < 0) return toast('Некорректная цена', 'error');
+
+  const oldTotal = s.quantity * s.buyPrice;
+  const newTotal = addQty * addPrice;
+  const totalQty = s.quantity + addQty;
+  const newAvgPrice = (oldTotal + newTotal) / totalQty;
+
+  s.quantity = totalQty;
+  s.buyPrice = Math.round(newAvgPrice * 100) / 100;
+
+  save();
+  toast(`✓ Докуплено ${addQty} шт. Теперь ${totalQty} шт.`, 'success');
+  haptic('medium');
+}
+
+document.querySelectorAll('[data-sticker-filter]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('[data-sticker-filter]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentStickerFilter = btn.dataset.stickerFilter;
+    renderStickers();
+  });
+});
+
+function filterStickers(stickers) {
+  if (currentStickerFilter === 'free') return stickers.filter(s => !s.applied);
+  if (currentStickerFilter === 'applied') return stickers.filter(s => s.applied);
+  if (currentStickerFilter === 'profit') return stickers.filter(s => s.currentPrice > s.buyPrice);
+  if (currentStickerFilter === 'loss') return stickers.filter(s => s.currentPrice < s.buyPrice);
+  if (currentStickerFilter === 'holo') return stickers.filter(s => ['holo','foil','gold'].includes(s.quality));
+  return stickers;
+}
+
+/* =========================================================
+   ФОРМА КЕЙСОВ
+========================================================= */
 document.getElementById('caseForm').addEventListener('submit', e => {
   e.preventDefault();
   const c = { id: Date.now(), name: document.getElementById('caseName').value.trim(),
@@ -1120,9 +1325,6 @@ function editCasePrice(id){ const c=state.cases.find(x=>x.id===id); if(!c)return
 function sellCase(id){ const c=state.cases.find(x=>x.id===id); if(!c)return; const v=prompt(`Продажа (₽). Тек: ${c.currentPrice}`,c.currentPrice); if(v===null)return; const n=parseFloat(v); if(isNaN(n)||n<0)return; c.status='sold'; c.soldPrice=n; save(); }
 function unsellCase(id){ const c=state.cases.find(x=>x.id===id); if(!c)return; if(!confirm('Вернуть?'))return; c.status='held'; c.soldPrice=null; save(); }
 
-/**
- * ➕ Докупить кейсы — увеличение количества с пересчётом средней цены
- */
 function buyMoreCase(id){
   const c = state.cases.find(x=>x.id===id);
   if(!c) return;
@@ -1133,9 +1335,7 @@ function buyMoreCase(id){
   );
   if(qtyInput === null) return;
   const addQty = parseInt(qtyInput);
-  if(isNaN(addQty) || addQty <= 0){
-    return toast('Некорректное количество', 'error');
-  }
+  if(isNaN(addQty) || addQty <= 0) return toast('Некорректное количество', 'error');
 
   const priceInput = prompt(
     `Цена покупки за 1 шт (₽)?\n\nТекущая средняя: ${fmt(c.buyPrice)}`,
@@ -1143,9 +1343,7 @@ function buyMoreCase(id){
   );
   if(priceInput === null) return;
   const addPrice = parseFloat(priceInput);
-  if(isNaN(addPrice) || addPrice < 0){
-    return toast('Некорректная цена', 'error');
-  }
+  if(isNaN(addPrice) || addPrice < 0) return toast('Некорректная цена', 'error');
 
   const oldQty = c.quantity;
   const oldPrice = c.buyPrice;
@@ -1158,22 +1356,13 @@ function buyMoreCase(id){
   c.buyPrice = Math.round(newAvgPrice * 100) / 100;
 
   save();
-
   toast(`✓ Докуплено ${addQty} шт. Теперь ${totalQty} шт.`, 'success');
   haptic('medium');
-
-  setTimeout(() => {
-    alert(
-      `📦 ${c.name}\n\n` +
-      `Было: ${oldQty} шт. × ${fmt(oldPrice)} = ${fmt(oldTotal)}\n` +
-      `Докупили: ${addQty} шт. × ${fmt(addPrice)} = ${fmt(newTotal)}\n\n` +
-      `✅ Стало: ${totalQty} шт.\n` +
-      `📊 Средняя цена: ${fmt(c.buyPrice)}\n` +
-      `💵 Всего вложено: ${fmt(c.quantity * c.buyPrice)}`
-    );
-  }, 300);
 }
 
+/* =========================================================
+   ФОРМА ТРЕЙДИНГА
+========================================================= */
 document.getElementById('tradeForm').addEventListener('submit', e => {
   e.preventDefault();
   const stopVal = document.getElementById('tradeStop').value;
@@ -1198,12 +1387,23 @@ function reopenTrade(id){ const t=state.trades.find(x=>x.id===id); if(!t)return;
 function tradePnl(t){ const p = t.status==='closed' ? t.exit : t.current; const d = t.side==='long' ? (p-t.entry) : (t.entry-p); return d*t.quantity; }
 function tradePnlPct(t){ const p = t.status==='closed' ? t.exit : t.current; const d = t.side==='long' ? (p-t.entry) : (t.entry-p); return (d/t.entry)*100; }
 
-document.querySelectorAll('.filters:not(.trade):not(.history) button').forEach(btn => {
-  btn.addEventListener('click', () => { document.querySelectorAll('.filters:not(.trade):not(.history) button').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); currentCaseFilter = btn.dataset.filter; renderCases(); });
+document.querySelectorAll('.filters:not(.trade):not(.history):not(.sticker) button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filters:not(.trade):not(.history):not(.sticker) button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    currentCaseFilter = btn.dataset.filter;
+    renderCases();
+  });
 });
 document.querySelectorAll('.filters.trade button').forEach(btn => {
-  btn.addEventListener('click', () => { document.querySelectorAll('.filters.trade button').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); currentTradeFilter = btn.dataset.tradeFilter; renderTrading(); });
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filters.trade button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    currentTradeFilter = btn.dataset.tradeFilter;
+    renderTrading();
+  });
 });
+
 function filterCases(cases){
   if(currentCaseFilter === 'held') return cases.filter(c=>c.status==='held');
   if(currentCaseFilter === 'sold') return cases.filter(c=>c.status==='sold');
@@ -1224,7 +1424,13 @@ function filterTrades(trades){
 ========================================================= */
 function renderAll(){
   try {
-    renderInvest(); renderCs2(); renderCases(); renderTrading(); renderOverview(); renderProfile();
+    renderInvest();
+    renderCs2();
+    renderStickers();
+    renderCases();
+    renderTrading();
+    renderOverview();
+    renderProfile();
   } catch(e){ console.error(e); }
 }
 
@@ -1266,6 +1472,104 @@ function renderCs2(){
   });
   const byW={}; state.skins.forEach(s=>{byW[s.weapon]=(byW[s.weapon]||0)+(s.quantity||1)*s.currentPrice;}); drawPie('pieWeapon',byW);
   const byWr={}; state.skins.forEach(s=>{byWr[s.wear]=(byWr[s.wear]||0)+(s.quantity||1)*s.currentPrice;}); drawPie('pieWear',byWr);
+}
+
+function renderStickers(){
+  const all = state.stickers || [];
+  const free = all.filter(s => !s.applied);
+  const applied = all.filter(s => s.applied);
+
+  const tv = free.reduce((s, x) => s + (x.quantity || 1) * x.currentPrice, 0);
+  const tc = free.reduce((s, x) => s + (x.quantity || 1) * x.buyPrice, 0);
+  const pnl = tv - tc;
+  const pp = tc > 0 ? (pnl / tc) * 100 : 0;
+  const cls = pnl >= 0 ? 'positive' : 'negative';
+  const ar = pnl >= 0 ? '▲' : '▼';
+
+  const totalWithApplied = all.reduce((s, x) => s + (x.quantity || 1) * x.currentPrice, 0);
+
+  document.getElementById('summaryStickers').innerHTML = `
+    <div class="card accent-pink">
+      <div class="card-label">Свободные</div>
+      <div class="card-value sticker">${fmt(tv)}</div>
+      <div class="card-sub">${free.reduce((s,x)=>s+(x.quantity||1),0)} шт.</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Вложено</div>
+      <div class="card-value">${fmt(tc)}</div>
+    </div>
+    <div class="card accent-${pnl >= 0 ? 'green' : 'orange'}">
+      <div class="card-label">${ar} P&L</div>
+      <div class="card-value ${cls}">${fmt(pnl)}</div>
+      <div class="card-sub ${cls}">${fmtPct(pp)}</div>
+    </div>
+    <div class="card">
+      <div class="card-label">📌 Наклеено</div>
+      <div class="card-value">${applied.reduce((s,x)=>s+(x.quantity||1),0)} шт.</div>
+      <div class="card-sub">${fmt(applied.reduce((s,x)=>s+(x.quantity||1)*x.currentPrice, 0))}</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Всего стоимость</div>
+      <div class="card-value">${fmt(totalWithApplied)}</div>
+      <div class="card-sub">${all.reduce((s,x)=>s+(x.quantity||1),0)} шт.</div>
+    </div>
+  `;
+
+  const tbody = document.getElementById('stickersBody');
+  tbody.innerHTML = '';
+  const filtered = filterStickers(all);
+  document.getElementById('emptyStickers').style.display = all.length ? 'none' : 'block';
+
+  filtered.sort((a, b) => {
+    if (a.applied !== b.applied) return a.applied ? 1 : -1;
+    return b.id - a.id;
+  });
+
+  filtered.forEach(s => {
+    const q = s.quantity || 1;
+    const v = q * s.currentPrice;
+    const c = q * s.buyPrice;
+    const p = v - c;
+    const pp = c > 0 ? (p / c) * 100 : 0;
+    const cl = p >= 0 ? 'positive' : 'negative';
+    const qualityLabel = STICKER_QUALITY_LABELS[s.quality] || s.quality;
+
+    const tr = document.createElement('tr');
+    if (s.applied) tr.className = 'sold-row';
+    tr.innerHTML = `
+      <td><strong>${esc(s.name)}</strong>${s.team ? `<br><small style="color:var(--text-dim)">${esc(s.team)}</small>` : ''}</td>
+      <td><span class="tag tag-${s.quality}">${qualityLabel}</span></td>
+      <td>${s.tournament ? esc(s.tournament) : '—'}</td>
+      <td>${s.applied ? '📌 Наклеена' : '🎨 Свободная'}</td>
+      <td>${q}</td>
+      <td>${fmt(s.buyPrice)}</td>
+      <td>${fmt(s.currentPrice)}</td>
+      <td class="${cl}">${fmt(p)}<br><small>${fmtPct(pp)}</small></td>
+      <td><div class="actions">
+        <button class="secondary" onclick="editSticker(${s.id})" title="Изменить цену">✏️</button>
+        <button class="secondary" onclick="toggleStickerApplied(${s.id})" title="${s.applied ? 'Отклеить' : 'Наклеить'}">${s.applied ? '🎨' : '📌'}</button>
+        <button class="buy-more" onclick="buyMoreSticker(${s.id})" title="Докупить">➕</button>
+        <button class="danger" onclick="removeSticker(${s.id})">✕</button>
+      </div></td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  const byQuality = {};
+  free.forEach(s => {
+    const label = STICKER_QUALITY_LABELS[s.quality] || s.quality;
+    byQuality[label] = (byQuality[label] || 0) + (s.quantity || 1) * s.currentPrice;
+  });
+  drawPie('pieStickerQuality', byQuality);
+
+  const top5 = [...free]
+    .sort((a, b) => ((b.currentPrice - b.buyPrice) / b.buyPrice) - ((a.currentPrice - a.buyPrice) / a.buyPrice))
+    .slice(0, 5);
+
+  document.getElementById('topStickers').innerHTML = top5.length ? top5.map(s => {
+    const p = ((s.currentPrice - s.buyPrice) / s.buyPrice) * 100;
+    return `<div class="calc-row"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:200px;">${esc(s.name)}</span><span style="color:${p >= 0 ? 'var(--green)' : 'var(--red)'};font-weight:600;">${fmtPct(p)}</span></div>`;
+  }).join('') : '<div class="empty">Нет наклеек</div>';
 }
 
 function renderCases(){
@@ -1312,9 +1616,9 @@ function renderCases(){
       <td><div class="actions">
         ${isSold 
           ? `<button class="undo" onclick="unsellCase(${c.id})">↩️</button>` 
-          : `<button class="secondary" onclick="editCasePrice(${c.id})" title="Изменить цену">✏️</button>
-             <button class="buy-more" onclick="buyMoreCase(${c.id})" title="Докупить">➕</button>
-             <button class="sell" onclick="sellCase(${c.id})" title="Продать">💰</button>`}
+          : `<button class="secondary" onclick="editCasePrice(${c.id})">✏️</button>
+             <button class="buy-more" onclick="buyMoreCase(${c.id})">➕</button>
+             <button class="sell" onclick="sellCase(${c.id})">💰</button>`}
         <button class="danger" onclick="removeCase(${c.id})">✕</button>
       </div></td>`;
     tbody.appendChild(tr);
@@ -1415,24 +1719,27 @@ function renderOverview(){
   const ic = state.assets.reduce((s,a)=>s + a.quantity*a.buyPrice, 0);
   const sv = state.skins.reduce((s,x)=>s + (x.quantity||1)*x.currentPrice, 0);
   const sc = state.skins.reduce((s,x)=>s + (x.quantity||1)*x.buyPrice, 0);
+  const stv = (state.stickers || []).filter(s => !s.applied).reduce((s,x)=>s + (x.quantity||1)*x.currentPrice, 0);
+  const stc = (state.stickers || []).filter(s => !s.applied).reduce((s,x)=>s + (x.quantity||1)*x.buyPrice, 0);
   const cv = state.cases.filter(c=>c.status==='held').reduce((s,c)=>s + c.quantity*c.currentPrice, 0);
   const cc = state.cases.filter(c=>c.status==='held').reduce((s,c)=>s + c.quantity*c.buyPrice, 0);
   const openTrades = state.trades.filter(t=>t.status==='open');
   const tradesValue = openTrades.reduce((s,t)=>s + t.quantity * t.current, 0);
   const tradesCost = openTrades.reduce((s,t)=>s + t.quantity * t.entry, 0);
-  const totalValue = iv + sv + cv + tradesValue;
-  const totalCost = ic + sc + cc + tradesCost;
+  const totalValue = iv + sv + stv + cv + tradesValue;
+  const totalCost = ic + sc + stc + cc + tradesCost;
   const pnl = totalValue - totalCost;
   const pnlPct = totalCost > 0 ? (pnl/totalCost)*100 : 0;
   const cls = pnl>=0?'positive':'negative';
   const arrow = pnl>=0?'▲':'▼';
   const pct = (v) => totalValue > 0 ? (v/totalValue*100).toFixed(0) : '0';
+  const stickerCount = (state.stickers || []).length;
 
   document.getElementById('summaryOverview').innerHTML = `
     <div class="card accent-blue" style="grid-column:1/-1;">
       <div class="card-label">💰 Общая стоимость</div>
       <div class="card-value" style="font-size:22px;">${fmt(totalValue)}</div>
-      <div class="card-sub">${state.assets.length + state.skins.length + state.cases.filter(c=>c.status==='held').length + openTrades.length} позиций</div>
+      <div class="card-sub">${state.assets.length + state.skins.length + stickerCount + state.cases.filter(c=>c.status==='held').length + openTrades.length} позиций</div>
     </div>
     <div class="card accent-${pnl>=0?'green':'orange'}">
       <div class="card-label">${arrow} P&L</div>
@@ -1445,11 +1752,12 @@ function renderOverview(){
     </div>
     <div class="card accent-blue"><div class="card-label">💼 Инвестиции</div><div class="card-value">${fmt(iv)}</div><div class="card-sub">${pct(iv)}%</div></div>
     <div class="card accent-orange"><div class="card-label">🎮 Скины</div><div class="card-value">${fmt(sv)}</div><div class="card-sub">${pct(sv)}%</div></div>
+    <div class="card accent-pink"><div class="card-label">🎨 Наклейки</div><div class="card-value sticker">${fmt(stv)}</div><div class="card-sub">${pct(stv)}%</div></div>
     <div class="card accent-purple"><div class="card-label">📦 Кейсы</div><div class="card-value case">${fmt(cv)}</div><div class="card-sub">${pct(cv)}%</div></div>
     <div class="card accent-cyan"><div class="card-label">💹 Трейдинг</div><div class="card-value trade">${fmt(tradesValue)}</div><div class="card-sub">${pct(tradesValue)}%</div></div>`;
 
-  drawPie('pieAll', { '💼 Инвестиции': iv, '🎮 Скины': sv, '📦 Кейсы': cv, '💹 Трейдинг': tradesValue });
-  drawPie('pieCs2Breakdown', { '🎮 Скины': sv, '📦 Кейсы': cv });
+  drawPie('pieAll', { '💼 Инвестиции': iv, '🎮 Скины': sv, '🎨 Наклейки': stv, '📦 Кейсы': cv, '💹 Трейдинг': tradesValue });
+  drawPie('pieCs2Breakdown', { '🎮 Скины': sv, '🎨 Наклейки': stv, '📦 Кейсы': cv });
 }
 
 function renderProfile(){
@@ -1465,11 +1773,13 @@ function renderProfile(){
       <div class="calc-row"><span>Premium</span><span>${user.is_premium ? '⭐ Да' : 'Нет'}</span></div>`;
   }
 
-  const totalItems = state.assets.length + state.skins.length + state.cases.filter(c=>c.status==='held').length + state.trades.filter(t=>t.status==='open').length;
+  const stickerCount = (state.stickers || []).length;
+  const totalItems = state.assets.length + state.skins.length + stickerCount + state.cases.filter(c=>c.status==='held').length + state.trades.filter(t=>t.status==='open').length;
   document.getElementById('profileStats').innerHTML = `
     <div class="calc-row"><span>Всего позиций</span><span>${totalItems}</span></div>
     <div class="calc-row"><span>Инвестиций</span><span>${state.assets.length}</span></div>
     <div class="calc-row"><span>CS2 Скинов</span><span>${state.skins.length}</span></div>
+    <div class="calc-row"><span>CS2 Наклеек</span><span>${stickerCount}</span></div>
     <div class="calc-row"><span>CS2 Кейсов</span><span>${state.cases.length}</span></div>
     <div class="calc-row"><span>Трейдов</span><span>${state.trades.length}</span></div>`;
 
@@ -1485,7 +1795,7 @@ function drawPie(id, map){
   const data = labels.map(k => map[k]);
   if(!labels.length){ ctx.clearRect(0,0,canvas.width,canvas.height); return; }
   if(typeof Chart === 'undefined') return;
-  const colors = ['#4a9eff','#4ade80','#fbbf24','#f87171','#a78bfa','#22d3ee','#fb923c','#ec4899','#14b8a6','#84cc16'];
+  const colors = ['#4a9eff','#4ade80','#fbbf24','#f87171','#a78bfa','#22d3ee','#fb923c','#d946ef','#14b8a6','#84cc16'];
   charts[id] = new Chart(ctx, {
     type: 'doughnut',
     data: { labels, datasets: [{ data, backgroundColor: colors.slice(0, labels.length), borderColor: 'rgba(10,14,20,0.8)', borderWidth: 2, hoverOffset: 6 }] },
@@ -1520,9 +1830,11 @@ function importData(e){
   reader.onload = ev => {
     try {
       const data = JSON.parse(ev.target.result);
-      const n = Array.isArray(data) ? {assets:data,skins:[],cases:[],trades:[]} : {assets:data.assets||[],skins:data.skins||[],cases:data.cases||[],trades:data.trades||[]};
+      const n = Array.isArray(data) ? {assets:data,skins:[],stickers:[],cases:[],trades:[]} : {
+        assets:data.assets||[],skins:data.skins||[],stickers:data.stickers||[],cases:data.cases||[],trades:data.trades||[]
+      };
       if(confirm('Заменить данные?')){
-        state.assets=n.assets; state.skins=n.skins; state.cases=n.cases; state.trades=n.trades;
+        state.assets=n.assets; state.skins=n.skins; state.stickers=n.stickers; state.cases=n.cases; state.trades=n.trades;
         save(); toast('Импортировано', 'success');
       }
     } catch(err){ toast('Ошибка: ' + err.message, 'error'); }
@@ -1533,7 +1845,7 @@ function importData(e){
 
 function clearAll(){
   if(!confirm('Удалить ВСЁ?')) return;
-  state.assets=[]; state.skins=[]; state.cases=[]; state.trades=[];
+  state.assets=[]; state.skins=[]; state.stickers=[]; state.cases=[]; state.trades=[];
   save(); toast('Очищено');
 }
 
