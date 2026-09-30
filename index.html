@@ -149,17 +149,17 @@
     align-items: center;
     justify-content: center;
     gap: 2px;
-    padding: 8px 6px;
+    padding: 8px 4px;
     cursor: pointer;
     border-radius: 12px;
     transition: all 0.2s var(--transition);
     flex: 1;
-    min-width: 52px;
+    min-width: 46px;
     -webkit-tap-highlight-color: transparent;
     position: relative;
   }
   .nav-item .icon {
-    font-size: 20px;
+    font-size: 19px;
     transition: transform 0.2s var(--transition);
     filter: grayscale(0.5) opacity(0.7);
   }
@@ -336,11 +336,10 @@
   .badge { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 10px; margin-left: 3px; vertical-align: middle; background: rgba(255,255,255,0.08); }
 
   .hint { font-size: 11.5px; color: var(--text-dim); margin-top: 8px; line-height: 1.6; }
-  .cs2-note, .case-note, .trade-note, .history-note { border-radius: var(--radius-sm); padding: 12px 14px; font-size: 12px; margin-bottom: 14px; line-height: 1.55; }
+  .cs2-note, .case-note, .trade-note { border-radius: var(--radius-sm); padding: 12px 14px; font-size: 12px; margin-bottom: 14px; line-height: 1.55; }
   .cs2-note { background: linear-gradient(135deg, rgba(245,158,11,0.08), rgba(245,158,11,0.02)); border: 1px solid rgba(245,158,11,0.2); color: #f5c76b; }
   .case-note { background: linear-gradient(135deg, rgba(167,139,250,0.08), rgba(167,139,250,0.02)); border: 1px solid rgba(167,139,250,0.2); color: #c4b5fd; }
   .trade-note { background: linear-gradient(135deg, rgba(34,211,238,0.08), rgba(34,211,238,0.02)); border: 1px solid rgba(34,211,238,0.2); color: #67e8f9; }
-  .history-note { background: linear-gradient(135deg, rgba(74,158,255,0.08), rgba(74,158,255,0.02)); border: 1px solid rgba(74,158,255,0.2); color: #93c5fd; }
 
   .calc-box { background: rgba(10,14,20,0.5); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px; margin-top: 12px; }
   .calc-row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 13px; border-bottom: 1px solid var(--border); gap: 10px; }
@@ -407,14 +406,14 @@
     </div>
   </div>
 
-  <!-- ===== ОБЗОР ===== -->
+  <!-- ОБЗОР -->
   <div class="tab-content active" id="tab-overview">
     <div class="cards" id="summaryOverview"></div>
     <div class="panel"><h2>🥧 Весь портфель</h2><div class="chart-container"><canvas id="pieAll"></canvas></div></div>
     <div class="panel"><h2>🎮 CS2 по категориям</h2><div class="chart-container"><canvas id="pieCs2Breakdown"></canvas></div></div>
   </div>
 
-  <!-- ===== ИСТОРИЯ ===== -->
+  <!-- ИСТОРИЯ -->
   <div class="tab-content" id="tab-history">
     <div class="cards" id="summaryHistory"></div>
 
@@ -436,7 +435,7 @@
     </div>
 
     <div class="panel">
-      <h2>🥧 По категориям (последний снимок)</h2>
+      <h2>🥧 По категориям</h2>
       <div class="chart-container" style="height:260px;">
         <canvas id="categoriesChart"></canvas>
       </div>
@@ -458,7 +457,7 @@
     </div>
   </div>
 
-  <!-- ===== ИНВЕСТИЦИИ ===== -->
+  <!-- ИНВЕСТИЦИИ -->
   <div class="tab-content" id="tab-invest">
     <div class="cards" id="summaryInvest"></div>
     <div class="panel">
@@ -478,7 +477,7 @@
     <div class="panel"><h2>🥧 Распределение</h2><div class="chart-container"><canvas id="pieChart"></canvas></div></div>
   </div>
 
-  <!-- ===== CS2 СКИНЫ ===== -->
+  <!-- CS2 СКИНЫ -->
   <div class="tab-content" id="tab-cs2">
     <div class="cards" id="summaryCs2"></div>
     <div class="cs2-note">💡 Комиссия Steam ~13%</div>
@@ -504,7 +503,7 @@
     <div class="panel"><h2>💠 По wear</h2><div class="chart-container"><canvas id="pieWear"></canvas></div></div>
   </div>
 
-  <!-- ===== CS2 КЕЙСЫ ===== -->
+  <!-- CS2 КЕЙСЫ -->
   <div class="tab-content" id="tab-cases">
     <div class="cards" id="summaryCases"></div>
     <div class="case-note">💡 Кейсы растут со временем</div>
@@ -536,7 +535,7 @@
     <div class="panel"><h2>💰 История продаж</h2><div id="soldHistory"></div><div id="emptySold" class="empty">Нет продаж</div></div>
   </div>
 
-  <!-- ===== ТРЕЙДИНГ ===== -->
+  <!-- ТРЕЙДИНГ -->
   <div class="tab-content" id="tab-trading">
     <div class="cards" id="summaryTrading"></div>
     <div class="panel">
@@ -572,7 +571,7 @@
     <div class="panel"><h2>📈 По классам</h2><div class="chart-container"><canvas id="pieTradeClass"></canvas></div></div>
   </div>
 
-  <!-- ===== ПРОФИЛЬ ===== -->
+  <!-- ПРОФИЛЬ -->
   <div class="tab-content" id="tab-profile">
     <div class="panel"><h2>👤 Профиль</h2><div id="profileInfo"></div></div>
     <div class="panel"><h2>📊 Статистика</h2><div class="calc-box" id="profileStats"></div></div>
@@ -820,7 +819,7 @@ async function renderHistory(){
         <div class="card-sub">${new Date(last.snapshot_date).toLocaleDateString('ru-RU')}</div>
       </div>
       <div class="card">
-        <div class="card-label">Было ${currentPeriod === 'all' ? 'в начале' : currentPeriod + ' дн. назад'}</div>
+        <div class="card-label">Было</div>
         <div class="card-value">${fmt(first.total_value)}</div>
         <div class="card-sub">${new Date(first.snapshot_date).toLocaleDateString('ru-RU')}</div>
       </div>
@@ -854,7 +853,7 @@ async function renderHistory(){
         labels,
         datasets: [{
           label: 'Стоимость',
-          data: snapshots.map(s => s.total_value),
+          data: snapshots.map(s => Number(s.total_value)),
           borderColor: '#4a9eff',
           backgroundColor: 'rgba(74, 158, 255, 0.1)',
           borderWidth: 2,
@@ -911,10 +910,10 @@ async function renderHistory(){
   if (snapshots.length && typeof Chart !== 'undefined'){
     const last = snapshots[snapshots.length - 1];
     const catData = {
-      '💼 Инвестиции': last.invest_value || 0,
-      '🎮 Скины': last.skins_value || 0,
-      '📦 Кейсы': last.cases_value || 0,
-      '💹 Трейдинг': last.trades_value || 0
+      '💼 Инвестиции': Number(last.invest_value) || 0,
+      '🎮 Скины': Number(last.skins_value) || 0,
+      '📦 Кейсы': Number(last.cases_value) || 0,
+      '💹 Трейдинг': Number(last.trades_value) || 0
     };
     const labels = Object.keys(catData).filter(k => catData[k] > 0);
     const data = labels.map(k => catData[k]);
@@ -966,7 +965,7 @@ async function renderHistory(){
   if (snapshots.length < 2){
     statsEl.innerHTML = '<div class="empty">Недостаточно данных</div>';
   } else {
-    const values = snapshots.map(s => s.total_value);
+    const values = snapshots.map(s => Number(s.total_value));
     const first = values[0];
     const last = values[values.length - 1];
     const max = Math.max(...values);
@@ -978,7 +977,7 @@ async function renderHistory(){
     let bestDay = { date: null, delta: -Infinity };
     let worstDay = { date: null, delta: Infinity };
     for (let i = 1; i < snapshots.length; i++){
-      const delta = snapshots[i].total_value - snapshots[i-1].total_value;
+      const delta = Number(snapshots[i].total_value) - Number(snapshots[i-1].total_value);
       if (delta > bestDay.delta) bestDay = { date: snapshots[i].snapshot_date, delta };
       if (delta < worstDay.delta) worstDay = { date: snapshots[i].snapshot_date, delta };
     }
@@ -1016,14 +1015,14 @@ async function renderHistory(){
           <tbody>
             ${recent.map((s, idx) => {
               const prev = recent[idx + 1];
-              const delta = prev ? s.total_value - prev.total_value : 0;
-              const deltaPct = prev && prev.total_value > 0 ? (delta / prev.total_value) * 100 : 0;
+              const delta = prev ? Number(s.total_value) - Number(prev.total_value) : 0;
+              const deltaPct = prev && Number(prev.total_value) > 0 ? (delta / Number(prev.total_value)) * 100 : 0;
               const cls = delta >= 0 ? 'positive' : 'negative';
               const d = new Date(s.snapshot_date);
               return `<tr>
                 <td>${d.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: '2-digit' })}</td>
                 <td><strong>${fmt(s.total_value)}</strong></td>
-                <td class="${s.total_pnl >= 0 ? 'positive' : 'negative'}">${fmt(s.total_pnl)}</td>
+                <td class="${Number(s.total_pnl) >= 0 ? 'positive' : 'negative'}">${fmt(s.total_pnl)}</td>
                 <td class="${cls}">${prev ? (delta >= 0 ? '+' : '') + fmt(delta) : '—'}</td>
               </tr>`;
             }).join('')}
@@ -1502,7 +1501,6 @@ if ('serviceWorker' in navigator) {
   if (telegramId) {
     const loaded = await loadFromCloud();
     if (loaded) renderAll();
-    // Создать/обновить снимок за сегодня
     await createTodaySnapshot();
   }
 })();
