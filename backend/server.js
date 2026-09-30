@@ -1,4 +1,3 @@
-cat > server.js << 'EOF'
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -130,4 +129,3 @@ cron.schedule('0 20 * * *', async () => {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`✅ Backend на порту ${PORT}`));
-EOF
